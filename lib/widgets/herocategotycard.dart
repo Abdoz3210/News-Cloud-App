@@ -11,36 +11,31 @@ class HeroCategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-
-    return Stack(
-      alignment: AlignmentDirectional.bottomStart,
-      children: [
-        ClipRect(
-          child: OverflowBox(
-            minWidth: width * 7 / 8,
-            maxWidth: width * 7 / 8,
-            child: Image(image: AssetImage(imageInfo.image), fit: BoxFit.cover),
+    final double height = MediaQuery.sizeOf(context).height;
+    return Container(
+      margin: EdgeInsets.only(left: 20),
+      // padding: EdgeInsets.symmetric(horizontal: 10),
+      // color: Colors.amber,
+      height: height,
+      width: width * 0.5,
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(12),
+        image: DecorationImage(
+          image: AssetImage(imageInfo.image),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          imageInfo.title,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.grey,
+            fontWeight: FontWeight.bold,
           ),
         ),
-
-        OverflowBox(
-          minWidth: width * 7 / 8,
-          maxWidth: width * 7 / 8,
-          child: Center(
-            child: Text(
-              imageInfo.title,
-              overflow: TextOverflow.clip,
-              softWrap: true,
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.grey,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 5,
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
