@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:news_app/Models/models.dart';
 import 'package:news_app/widgets/categorylist.dart';
 // import 'package:news_app/widgets/newscard.dart';
-import 'package:news_app/widgets/newslist.dart';
+import 'package:news_app/widgets/news_list_builder.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -20,20 +19,23 @@ class HomeView extends StatelessWidget {
         backgroundColor: Colors.transparent,
 
         elevation: 0,
-        title: RichText(
-          text: TextSpan(
-            text: 'News',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                text: "Cloud",
-                style: TextStyle(color: Colors.amber),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RichText(
+            text: TextSpan(
+              text: 'News',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-            ],
+              children: <TextSpan>[
+                TextSpan(
+                  text: "Cloud",
+                  style: TextStyle(color: Colors.amber),
+                ),
+              ],
+            ),
           ),
         ),
         centerTitle: true,
@@ -43,7 +45,7 @@ class HomeView extends StatelessWidget {
         // mainAxisSize: MainAxisSize.min,
         slivers: [
           SliverToBoxAdapter(child: CategoryList()),
-          NewsList(),
+          NewsListBuilder(),
           // NewsCard(),
         ],
       ),

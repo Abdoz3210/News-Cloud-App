@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 // import 'package:news_app/Models/models.dart';
 import 'dart:math' as math;
 
+import 'package:news_app/Models/articales_model.dart';
+
 Color randomMaterialColor() {
   final randomIndex = math.Random().nextInt(Colors.primaries.length);
   return Colors.primaries[randomIndex];
 }
 
 class NewsCard extends StatelessWidget {
-  const NewsCard({super.key});
+  const NewsCard({super.key, required this.artical});
+
+  final ArticalModel artical;
   // final NewsInfoModel newsInfo;
   @override
   Widget build(BuildContext context) {
@@ -22,22 +26,30 @@ class NewsCard extends StatelessWidget {
           SizedBox(
             width: width,
             height: height * 0.25,
+
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: randomMaterialColor(),
+
+                color: artical.image != null ? null : randomMaterialColor(),
+                image:  artical.image == null
+                    ? null
+                    : DecorationImage(
+                  image: NetworkImage(artical.image!),
+                  fit: BoxFit.fill,
+                ),
               ),
-              child: Icon(Icons.api),
+              child: artical.image != null ? null : Icon(Icons.api),
             ),
           ),
           Text(
-            "tital tital tital tital tital tital ",
+            artical.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
-            "News News News News News News News News News News News News News News News News News News News News News News News News ",
+            artical.descriptation ?? " ",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
 
