@@ -31,13 +31,13 @@ class NewsCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
 
-                color: artical.image != null ? null : randomMaterialColor(),
-                image:  artical.image == null
+                image: artical.image == null
                     ? null
                     : DecorationImage(
-                  image: NetworkImage(artical.image!),
-                  fit: BoxFit.fill,
-                ),
+                        image: NetworkImage(artical.image!),
+                        fit: BoxFit.fill,
+                      ),
+                color: artical.image != null ? null : randomMaterialColor(),
               ),
               child: artical.image != null ? null : Icon(Icons.api),
             ),

@@ -12,23 +12,17 @@ class NewsServce {
   //   );
   // }
 
-  Future<List<ArticalModel>> getGeneral() async {
+  Future<List<ArticalModel>> getGeneral({required String category}) async {
     final Response response = await dio.get(
-      'https://newsapi.org/v2/top-headlines?apiKey=232668304d4342d5a1a6407d88450a86&category=general',
+      'https://newsapi.org/v2/top-headlines?apiKey=232668304d4342d5a1a6407d88450a86&category=$category',
     );
     Map<String, dynamic> josnData = response.data;
-    List<dynamic> articales = josnData['articles'];
+    List<dynamic> articals = josnData['articles'];
 
     List<ArticalModel> articalList = [];
 
-    for (var articale in articales) {
-      ArticalModel articalModel = ArticalModel(
-        aurther: articale['author'],
-        content: articale['content'],
-        descriptation: articale['description'],
-        image: articale['urlToImage'],
-        title: articale['title'],
-      );
+    for (var artical in articals) {
+      ArticalModel articalModel = ArticalModel.fromjson(artical);
       articalList.add(articalModel);
     }
     // print(articalList);

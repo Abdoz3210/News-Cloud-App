@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/Models/models.dart';
 import 'package:news_app/widgets/categorylist.dart';
 // import 'package:news_app/widgets/newscard.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
-  final ImageInfoModel imageInfo = const ImageInfoModel(
-    image: 'assets/business.png',
-    title: 'Business',
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +40,7 @@ class HomeView extends StatelessWidget {
         // mainAxisSize: MainAxisSize.min,
         slivers: [
           SliverToBoxAdapter(child: CategoryList()),
-          NewsListBuilder(),
+          NewsListBuilder(caregory: 'general'),
           // NewsCard(),
         ],
       ),

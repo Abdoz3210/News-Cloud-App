@@ -2,7 +2,7 @@
 // import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 
 import 'package:flutter/material.dart';
-import 'package:news_app/Models/models.dart';
+import 'package:news_app/Models/category_models.dart';
 import 'package:news_app/widgets/herocategotycard.dart';
 
 class CategoryList extends StatefulWidget {
@@ -13,14 +13,14 @@ class CategoryList extends StatefulWidget {
 }
 
 class _CategoryListState extends State<CategoryList> {
-  final List<ImageInfoModel> imageinfo = const [
-    ImageInfoModel(image: "assets/business.png", title: "Business"),
-    ImageInfoModel(image: "assets/entertaiment.png", title: "Entertaiment"),
-    ImageInfoModel(image: "assets/general.png", title: "General"),
-    ImageInfoModel(image: "assets/health.png", title: "Healthy"),
-    ImageInfoModel(image: "assets/science.png", title: "Science"),
-    ImageInfoModel(image: "assets/sports.png", title: "Sports"),
-    ImageInfoModel(image: "assets/technology.png", title: "Technology"),
+  final List<CategoryModel> imageinfo = const [
+    CategoryModel(image: "assets/business.png", title: "Business"),
+    CategoryModel(image: "assets/entertaiment.png", title: "Entertainment"),
+    CategoryModel(image: "assets/general.png", title: "General"),
+    CategoryModel(image: "assets/health.png", title: "Health"),
+    CategoryModel(image: "assets/science.png", title: "Science"),
+    CategoryModel(image: "assets/sports.png", title: "Sports"),
+    CategoryModel(image: "assets/technology.png", title: "Technology"),
   ];
 
   @override
@@ -30,10 +30,10 @@ class _CategoryListState extends State<CategoryList> {
     return SizedBox(
       width: width,
       height: height * 0.15,
-      child: ListView (
+      child: ListView(
         scrollDirection: Axis.horizontal,
         children: imageinfo.map((e) {
-          return HeroCategoryCard(imageInfo: e);
+          return HeroCategoryCard(categoryModel: e);
         }).toList(),
       ),
     );
