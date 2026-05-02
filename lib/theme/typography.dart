@@ -26,6 +26,12 @@ class AppTypography {
     height: 1.3,
     color: AppColors.deepNeutral,
   );
+  static TextStyle get headlineColor => GoogleFonts.newsreader(
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+    height: 1.3,
+    color: AppColors.primary,
+  );
 
   static TextStyle get pullQuote => GoogleFonts.newsreader(
     fontSize: 20,

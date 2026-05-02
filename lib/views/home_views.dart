@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/theme/app_colors.dart';
+import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/categorylist.dart';
 // import 'package:news_app/widgets/newscard.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
@@ -11,7 +13,7 @@ class HomeView extends StatelessWidget {
     // final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.surface,
 
         elevation: 0,
         title: Padding(
@@ -19,16 +21,9 @@ class HomeView extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               text: 'News',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+              style: AppTypography.headline,
               children: <TextSpan>[
-                TextSpan(
-                  text: "Cloud",
-                  style: TextStyle(color: Colors.amber),
-                ),
+                TextSpan(text: "Cloud", style: AppTypography.headlineColor),
               ],
             ),
           ),

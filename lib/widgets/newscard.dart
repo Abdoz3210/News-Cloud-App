@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 import 'package:news_app/Models/articales_model.dart';
+import 'package:news_app/theme/typography.dart';
 
 Color randomMaterialColor() {
   final randomIndex = math.Random().nextInt(Colors.primaries.length);
@@ -46,14 +47,14 @@ class NewsCard extends StatelessWidget {
             artical.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: AppTypography.headline,
           ),
           Text(
             artical.descriptation ?? " ",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
 
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
+            style: AppTypography.body,
           ),
         ],
       ),

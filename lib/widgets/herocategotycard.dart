@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Models/category_models.dart';
+import 'package:news_app/theme/app_colors.dart';
+import 'package:news_app/theme/typography.dart';
 import 'package:news_app/views/category_views.dart';
 
 class HeroCategoryCard extends StatelessWidget {
@@ -16,8 +18,7 @@ class HeroCategoryCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                CategoryViews(category: categoryModel.title),
+            builder: (context) => CategoryViews(category: categoryModel.title),
           ),
         );
       },
@@ -28,7 +29,7 @@ class HeroCategoryCard extends StatelessWidget {
         height: height,
         width: width * 0.5,
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           image: DecorationImage(
             image: AssetImage(categoryModel.image),
@@ -36,14 +37,7 @@ class HeroCategoryCard extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: Text(
-            categoryModel.title,
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.grey,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: Text(categoryModel.title, style: AppTypography.buttonLabel),
         ),
       ),
     );
