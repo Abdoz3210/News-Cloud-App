@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/theme/typography.dart';
 import 'app_colors.dart';
 
 class AppTheme {
@@ -23,5 +24,18 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: AppColors.surface,
     dividerColor: Colors.transparent,
+    //--Text theme --------------------------------------
+    textTheme: TextTheme(
+      displayLarge: AppTypography.displayLg,
+      displayMedium: AppTypography.displayMd,
+      headlineLarge: AppTypography.headline,
+      titleLarge: AppTypography.titleLg,
+      titleMedium: AppTypography.titleMd,
+      bodyLarge: AppTypography.bodySerif,
+      bodyMedium: AppTypography.body,
+      labelLarge: AppTypography.labelLg,
+      labelMedium: AppTypography.labelMd,
+      labelSmall: AppTypography.caption,
+    ),
   );
 }
