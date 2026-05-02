@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/theme/app_colors.dart';
+import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
 
 class CategoryViews extends StatelessWidget {
@@ -9,8 +11,8 @@ class CategoryViews extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text(category, style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: AppColors.primaryLight,
+        title: Text(category, style: AppTypography.headline),
       ),
       body: CustomScrollView(
         slivers: [NewsListBuilder(caregory: category.toLowerCase())],

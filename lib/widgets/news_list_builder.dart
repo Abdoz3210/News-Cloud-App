@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/Models/articales_model.dart';
 import 'package:news_app/services/getnews.dart';
+import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/news_list.dart';
 
 class NewsListBuilder extends StatefulWidget {
@@ -32,7 +33,10 @@ class _NewsListState extends State<NewsListBuilder> {
           return NewsList(articals: snapshot.data ?? []);
         } else if (snapshot.hasError) {
           return SliverToBoxAdapter(
-            child: Text("There are an Error, Try again later "),
+            child: Text(
+              "There are an Error, Try again later ",
+              style: AppTypography.body,
+            ),
           );
         } else {
           return SliverToBoxAdapter(
