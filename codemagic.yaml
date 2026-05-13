@@ -9,7 +9,7 @@ workflows:
       xcode: latest
       cocoapods: default
       ios_signing:
-        distribution_type: app_store
+        distribution_type: ad_hoc
         bundle_identifier: com.abdosalah.newsapp
     scripts:
       - name: Get Flutter packages
@@ -31,4 +31,4 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
-        submit_to_testflight: true
+        submit_to_testflight: false
