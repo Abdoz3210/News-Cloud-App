@@ -1,0 +1,38 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.abdosalah.newsapp  # ← change this
+
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+
+      - name: Install pods
+        script: |
+          cd ios
+          pod install
+
+      - name: Build iOS
+        script: |
+          flutter build ios --release --no-codesign
+
+      - name: Build IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/Runner.xcworkspace \
+            --scheme Runner
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
