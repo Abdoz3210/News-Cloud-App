@@ -7,19 +7,19 @@ class AppInput extends StatelessWidget {
     super.key,
     required this.label,
     this.hint,
-    required this.controller,
-    required this.obscureText,
+    this.controller,
+    this.obscureText = false,
     this.suffixIcon,
     this.keyboardType,
-    required this.onChanged,
+    this.onChanged,
   });
   final String label;
   final String? hint;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool obscureText;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class AppInput extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           onChanged: onChanged,
-          style: AppTypography.body,
+          style: AppTypography.body.copyWith(color: AppColors.primary),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: AppTypography.body.copyWith(

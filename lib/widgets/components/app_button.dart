@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
@@ -6,11 +5,11 @@ import 'package:news_app/theme/typography.dart';
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
-    required this.labal,
+    required this.label,
     required this.onPressed,
     required this.isLoading,
   });
-  final String labal;
+  final String label;
   final VoidCallback onPressed;
   final bool isLoading;
 
@@ -34,7 +33,7 @@ class AppButton extends StatelessWidget {
                   strokeWidth: 2,
                 ),
               )
-            : Text(labal.toUpperCase(), style: AppTypography.buttonLabel),
+            : Text(label.toUpperCase(), style: AppTypography.buttonLabel),
       ),
     );
   }
