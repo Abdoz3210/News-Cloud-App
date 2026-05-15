@@ -13,22 +13,20 @@ class HomeView extends StatelessWidget {
     // final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
-
+        // backgroundColor: AppColors.surface,
+        centerTitle: true,
         elevation: 0,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RichText(
-            text: TextSpan(
-              text: 'News',
-              style: AppTypography.headline,
-              children: <TextSpan>[
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: 'News', style: AppTypography.headline),
                 TextSpan(text: "Cloud", style: AppTypography.headlineColor),
               ],
             ),
           ),
         ),
-        centerTitle: true,
       ),
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),

@@ -11,7 +11,7 @@ class CategoryViews extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryLight,
+        backgroundColor: AppColors.primary,
         title: Text(category, style: AppTypography.headline),
       ),
       body: CustomScrollView(
