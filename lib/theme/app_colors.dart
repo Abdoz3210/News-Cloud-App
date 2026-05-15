@@ -32,4 +32,15 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
+
+  //-----Surfanes----------------------------------------------
+  static const Color surfaceDark = Color(0xff1c1b1b);
+  static const Color surfaceContainerLowDark = Color(0xff252323);
+  static const Color surfaceContinerHighDark = Color(0xff2e2c2);
+  static const Color surfaceContainerHighestDark = Color(0xff383535);
+
+  //----Neutrals (Dark) ----------------------------------------
+  static const Color onSurfaceDark = Color(0xfff3efed);
+  static const Color onSurfaceVarianDark = Color(0xffada8a6);
+  
 }
