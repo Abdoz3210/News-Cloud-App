@@ -15,6 +15,7 @@ class AppCard extends StatelessWidget {
         color: AppColors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
       ),
+      child: child,
     );
   }
 }
