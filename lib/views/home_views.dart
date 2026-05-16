@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/categorylist.dart';
+import 'package:news_app/widgets/components/app_bottom_nav.dart';
+import 'package:news_app/widgets/components/app_top_bar.dart';
 // import 'package:news_app/widgets/newscard.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
 
@@ -12,22 +14,18 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     // final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: AppColors.surface,
-        centerTitle: true,
-        elevation: 0,
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(text: 'News', style: AppTypography.headline),
-                TextSpan(text: "Cloud", style: AppTypography.headlineColor),
-              ],
-            ),
+      appBar: AppTopBar(
+        title: 'News Cloud',
+        leading: Icon(Icons.menu_rounded),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.person_outline_rounded),
           ),
-        ),
+        ],
       ),
+      bottomNavigationBar: AppBottomNav(currentIndex: 0, onTap: () {}),
+
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         // mainAxisSize: MainAxisSize.min,
