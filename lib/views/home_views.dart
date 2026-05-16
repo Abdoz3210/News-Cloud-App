@@ -13,28 +13,26 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final double height = MediaQuery.sizeOf(context).height;
-    return Scaffold(
-      appBar: AppTopBar(
-        title: 'News Cloud',
-        leading: Icon(Icons.menu_rounded),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.person_outline_rounded),
-          ),
-        ],
-      ),
-      bottomNavigationBar: AppBottomNav(currentIndex: 0, onTap: () {}),
-
-      body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
-        // mainAxisSize: MainAxisSize.min,
-        slivers: [
-          SliverToBoxAdapter(child: CategoryList()),
-          NewsListBuilder(caregory: 'general'),
-          // NewsCard(),
-        ],
-      ),
+    return CustomScrollView(
+      physics: BouncingScrollPhysics(),
+      // mainAxisSize: MainAxisSize.min,
+      slivers: [
+        // SliverToBoxAdapter(
+        //   child: AppTopBar(
+        //     title: 'News Cloud',
+        //     leading: Icon(Icons.menu_rounded),
+        //     actions: [
+        //       IconButton(
+        //         onPressed: () {},
+        //         icon: Icon(Icons.person_outline_rounded),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        SliverToBoxAdapter(child: CategoryList()),
+        NewsListBuilder(caregory: 'general'),
+        // NewsCard(),
+      ],
     );
   }
 }

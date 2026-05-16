@@ -9,7 +9,7 @@ class AppBottomNav extends StatelessWidget {
     required this.onTap,
   });
   final int currentIndex;
-  final VoidCallback onTap;
+  final ValueChanged<int> onTap;
   final bool canBlur = true;
 
   @override
@@ -33,7 +33,7 @@ class AppBottomNav extends StatelessWidget {
         selectedIndex: currentIndex,
         backgroundColor: Colors.transparent,
         indicatorColor: AppColors.primary.withOpacity(0.15),
-        onDestinationSelected: (index) => onTap,
+        onDestinationSelected: (index) => onTap(index),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
