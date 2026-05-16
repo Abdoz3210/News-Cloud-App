@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "697886340507",
+    "project_id": "the-chronicler-8b251",
+    "storage_bucket": "the-chronicler-8b251.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:697886340507:android:5c17627e1ef8b80a47dd3e",
+        "android_client_info": {
+          "package_name": "com.example.news_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHz1muKAuX9OIDPaZDdyh8AWsTbYiD-fw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
