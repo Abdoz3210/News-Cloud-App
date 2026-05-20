@@ -27,6 +27,23 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String?> signUp({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    try {
+      final credential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await credential.user?.updateDisplayName(username);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return _mapError(e.code);
+    }
+  }
+
   String _mapError(String code) {
     switch (code) {
       case 'user_notfound':

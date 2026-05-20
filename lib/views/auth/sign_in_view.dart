@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:news_app/views/auth/sign_up_view.dart';
 import 'package:provider/provider.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/theme/app_colors.dart';
@@ -128,7 +129,7 @@ class _SignInViewState extends State<SignInView> {
                         onPressed: () {},
                         child: Text(
                           "FORGETTEN",
-                          style: AppTypography.caption.copyWith(
+                          style: AppTypography.buttonLabel.copyWith(
                             color: AppColors.primary,
                           ),
                         ),
@@ -169,7 +170,12 @@ class _SignInViewState extends State<SignInView> {
                     children: [
                       WidgetSpan(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SignUpView(),
+                            ),
+                          ),
                           child: Text(
                             "   Request Access",
                             style: AppTypography.body.copyWith(
