@@ -26,9 +26,14 @@ class AppInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label.toUpperCase(),
-          style: AppTypography.categoryTag.copyWith(color: AppColors.primary),
+        Row(
+          children: [
+            SizedBox(width: 15),
+            Text(
+              label.toUpperCase(),
+              style: AppTypography.labelMd.copyWith(color: AppColors.primary),
+            ),
+          ],
         ),
         const SizedBox(height: 8),
         TextField(

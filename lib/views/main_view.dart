@@ -34,7 +34,7 @@ class _MainViewState extends State<MainView> {
       key: _scaffoldKey,
       drawer: const AppDrawer(),
       appBar: AppTopBar(
-        title: 'News Cloud',
+        title: 'The Chronicler',
         leading: IconButton(
           icon: const Icon(Icons.menu_rounded),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),

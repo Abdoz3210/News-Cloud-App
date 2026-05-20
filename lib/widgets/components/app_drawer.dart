@@ -1,8 +1,11 @@
 import 'dart:io';
 
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
+import 'package:news_app/core/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -81,7 +84,10 @@ class AppDrawer extends StatelessWidget {
               icon: Icons.logout_rounded,
               label: 'Sign Out',
               isSigbOut: true,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context);
+                context.read<AuthProvider>().signOut();
+              },
             ),
 
             const SizedBox(height: 16),
