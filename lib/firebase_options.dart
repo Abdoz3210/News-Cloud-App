@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'the-chronicler-8b251.firebasestorage.app',
     measurementId: 'G-WSQ7S4ZD7G',
   );
+
 }

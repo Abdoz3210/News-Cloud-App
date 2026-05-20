@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:news_app/core/providers/auth_gate.dart';
+import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/core/providers/theme_providers.dart';
 import 'package:news_app/views/design_test_views.dart';
 import 'package:news_app/views/home_views.dart';
@@ -19,8 +21,11 @@ void main() async {
   // FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProviders()..loadTheme(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProviders()..loadTheme()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
       child: const NewsApp(),
     ),
   );
@@ -38,7 +43,7 @@ class NewsApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
       // home: const DesignTestViews(),
-      home: const MainView(),
+      home: const AuthGate(),
     );
   }
 }
