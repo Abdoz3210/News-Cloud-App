@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:news_app/core/services/secure_storage_secvice.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final _secureStorage = SecureStorageSecvice.instance;
   User? get curentUser => _auth.currentUser;
   bool get isLoggedIn => _auth.currentUser != null;
 
@@ -16,6 +16,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _secureStorage.saveUserEmail(email);
       return null;
     } on FirebaseAuthException catch (e) {
       return _mapError(e.code);
@@ -24,6 +25,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> signOut() async {
     await _auth.signOut();
+    await _secureStorage.clearAll();
     notifyListeners();
   }
 
@@ -38,9 +40,25 @@ class AuthProvider extends ChangeNotifier {
         password: password,
       );
       await credential.user?.updateDisplayName(username);
+      await _secureStorage.saveUserEmail(email);
       return null;
     } on FirebaseAuthException catch (e) {
       return _mapError(e.code);
+    }
+  }
+
+  Future<String?> getToken() async {
+    try {
+      return await _auth.currentUser?.getIdToken(true);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> handleTokenExpiry() async {
+    final token = await getToken();
+    if (token == null) {
+      await signOut();
     }
   }
 
@@ -54,6 +72,12 @@ class AuthProvider extends ChangeNotifier {
         return 'Please enter a valid email address.';
       case 'too-many-requests':
         return 'Too many attempts. Try again later.';
+      case 'email-already-in-use':
+        return 'An account already exists with this email.';
+      case 'weak-password':
+        return 'Password must be at least 6 characters.';
+      case 'network-request-failed':
+        return 'No internet connection. Try again.';
       default:
         return ' Something went wrong, Try agfin later.....';
     }
