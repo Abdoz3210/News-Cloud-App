@@ -3,7 +3,14 @@ import 'dart:ffi';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:ffi';
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/core/providers/auth_provider.dart';
+import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
@@ -59,7 +66,6 @@ class _UserHeader extends StatelessWidget {
               'JOURNAALIST MEMBER',
               style: AppTypography.caption.copyWith(
                 color: AppColors.onPrimary,
-
                 letterSpacing: 0.08,
               ),
             ),
