@@ -231,7 +231,8 @@ class _editAvatarButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: AppColors.primary,
+          gradient: AppColors.primaryGradient,
+          // color: AppColors.primary,
           shape: BoxShape.circle,
           border: Border.all(
             color: Theme.of(context).colorScheme.surface,
