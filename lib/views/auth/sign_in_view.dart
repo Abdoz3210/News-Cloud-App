@@ -1,7 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:news_app/core/utils/validators.dart';
 import 'package:news_app/views/auth/sign_up_view.dart';
+import 'package:news_app/widgets/components/app_text_form_field.dart';
 import 'package:provider/provider.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/theme/app_colors.dart';
@@ -23,6 +23,8 @@ class _SignInViewState extends State<SignInView> {
   bool _isLoading = false;
   String? _errorMessage;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -30,7 +32,7 @@ class _SignInViewState extends State<SignInView> {
     super.dispose();
   }
 
-  Future<void> _sign() async {
+  Future<void> _signIn() async {
     setState(() {
       _errorMessage = null;
       _isLoading = true;
@@ -88,74 +90,85 @@ class _SignInViewState extends State<SignInView> {
                   color: Theme.of(context).colorScheme.surfaceContainerLow,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  children: [
-                    AppInput(
-                      label: "subscriber Email",
-                      hint: "name@chronicler.com",
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (_) => setState(() {
-                        _errorMessage = null;
-                      }),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    AppInput(
-                      label: "Secret Key",
-                      hint: "••••••••",
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      onChanged: (_) => setState(() {
-                        _errorMessage = null;
-                      }),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                        ),
-                        onPressed: () => setState(
-                          () => _obscurePassword = !_obscurePassword,
-                        ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      AppTextFormField(
+                        label: "subscriber Email",
+                        hint: "name@chronicler.com",
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        validator: Validators.email,
+                        autofocus: true,
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).nextFocus(),
+                        // onChanged: (_) => setState(() {
+                        // _errorMessage = null;
+                        // }),
                       ),
-                    ),
 
-                    Align(
-                      alignment: Alignment.centerRight,
+                      const SizedBox(height: 16),
 
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "FORGETTEN",
-                          style: AppTypography.buttonLabel.copyWith(
-                            color: AppColors.primary,
+                      AppTextFormField(
+                        label: "Secret Key",
+                        hint: "••••••••",
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        validator: Validators.password,
+                        onFieldSubmitted: (_) => _signIn(),
+
+                        // onChanged: (_) => setState(() {
+                        //   _errorMessage = null;
+                        // }),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                          onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword,
                           ),
                         ),
                       ),
-                    ),
 
-                    if (_errorMessage != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        _errorMessage!,
-                        style: AppTypography.caption.copyWith(
-                          color: AppColors.error,
+                      Align(
+                        alignment: Alignment.centerRight,
+
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "FORGETTEN",
+                            style: AppTypography.buttonLabel.copyWith(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      if (_errorMessage != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          _errorMessage!,
+                          style: AppTypography.caption.copyWith(
+                            color: AppColors.error,
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: 5),
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: AppButton(
+                          label: "Sign In ->",
+                          onPressed: _signIn,
+                          isLoading: _isLoading,
                         ),
                       ),
                     ],
-                    SizedBox(height: 5),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: AppButton(
-                        label: "Sign In ->",
-                        onPressed: _sign,
-                        isLoading: _isLoading,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
 

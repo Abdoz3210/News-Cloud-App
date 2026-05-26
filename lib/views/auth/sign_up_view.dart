@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/core/utils/validators.dart';
+import 'package:news_app/widgets/components/app_text_form_field.dart';
+import 'package:news_app/widgets/components/password_strenght_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/theme/app_colors.dart';
@@ -27,6 +30,9 @@ class _SignUpViewState extends State<SignUpView> {
   bool _isloading = false;
   bool _acceptedTerms = false;
   String? _errorMessage;
+  late String _password = '';
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -57,6 +63,13 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Future<void> _signUp() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (!_acceptedTerms) {
+      setState(() {
+        _errorMessage = 'Please accept the terms to continue.';
+        return;
+      });
+    }
     final validateError = _vaildate();
     if (validateError != null) {
       setState(() {
@@ -130,87 +143,150 @@ class _SignUpViewState extends State<SignUpView> {
                   borderRadius: BorderRadius.circular(16),
                 ),
 
-                child: Column(
-                  children: [
-                    AppInput(
-                      label: "Full Name",
-                      hint: 'Abdelrhman Salah',
-                      controller: _nameController,
-                      keyboardType: TextInputType.name,
-                      onChanged: (_) => setState(() => _errorMessage = null),
-                    ),
-                    SizedBox(height: 16),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      AppTextFormField(
+                        label: "Full Name",
+                        hint: 'Abdelrhman Salah',
+                        validator: Validators.fullName,
+                        controller: _nameController,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).nextFocus(),
+                        // onChanged: (_) => setState(() => _errorMessage = null),
+                      ),
+                      SizedBox(height: 16),
 
-                    AppInput(
-                      label: "Email Address",
-                      hint: 'name@chroniler.com',
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (_) => setState(() => _errorMessage = null),
-                    ),
-                    SizedBox(height: 16),
+                      AppTextFormField(
+                        label: "Email Address",
+                        hint: 'name@chroniler.com',
+                        validator: Validators.email,
+                        controller: _emailController,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).nextFocus(),
+                        // onChanged: (_) => setState(() => _errorMessage = null),
+                      ),
+                      SizedBox(height: 16),
 
-                    AppInput(
-                      label: "Password",
-                      hint: '••••••••',
-                      controller: _passwordController,
-                      // keyboardType: TextInputType.visiblePassword,
-                      obscureText: _obscurePassword,
-                      onChanged: (_) => setState(() => _errorMessage = null),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                          color: AppColors.onSurfaceVarianDark,
-                        ),
-                        onPressed: () => setState(
-                          () => _obscurePassword = !_obscurePassword,
+                      AppTextFormField(
+                        label: "Password",
+                        hint: '••••••••',
+                        controller: _passwordController,
+                        validator: Validators.passwordStrong,
+                        textInputAction: TextInputAction.next,
+                        // keyboardType: TextInputType.visiblePassword,
+                        obscureText: _obscurePassword,
+                        onChanged: (value) => setState(() => _password = value),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: AppColors.onSurfaceVarianDark,
+                          ),
+                          onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 16),
+                      PasswordStrenghtIndicator(password: _password),
+                      SizedBox(height: 16),
 
-                    AppInput(
-                      label: "Confirm Password",
-                      hint: '••••••••',
-                      controller: _confirmPasswordController,
-                      // keyboardType: TextInputType.visiblePassword,
-                      obscureText: _obscurePassword,
-                      onChanged: (_) => setState(() => _errorMessage = null),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                          color: AppColors.onSurfaceVarianDark,
-                        ),
-                        onPressed: () => setState(
-                          () => _obscurePassword = !_obscurePassword,
+                      AppTextFormField(
+                        label: "Confirm Password",
+                        hint: '••••••••',
+                        validator: (value) =>
+                            Validators.confirmPassword(value, _password),
+                        controller: _confirmPasswordController,
+                        textInputAction: TextInputAction.done,
+                        // keyboardType: TextInputType.visiblePassword,
+                        obscureText: _obscurePassword,
+                        onChanged: (_) => setState(() => _errorMessage = null),
+                        onFieldSubmitted: (_) => _signUp(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: AppColors.onSurfaceVarianDark,
+                          ),
+                          onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 16),
+                      SizedBox(height: 16),
 
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _acceptedTerms,
-                          activeColor: AppColors.primary,
-                          onChanged: (value) =>
-                              setState(() => _acceptedTerms = value ?? false),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _acceptedTerms,
+                            activeColor: AppColors.primary,
+                            onChanged: (value) =>
+                                setState(() => _acceptedTerms = value ?? false),
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              text: "I agree to the ",
+                              style: AppTypography.caption,
+                              children: [
+                                WidgetSpan(
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Text(
+                                      "Terms of Sevice",
+                                      style: AppTypography.caption.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      if (_errorMessage != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          _errorMessage!,
+                          style: AppTypography.caption.copyWith(
+                            color: AppColors.error,
+                          ),
                         ),
-                        Text.rich(
+                      ],
+
+                      const SizedBox(height: 16),
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: AppButton(
+                          label: 'Sign Up',
+                          onPressed: _signUp,
+                          isLoading: _isloading,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+
+                      Center(
+                        child: Text.rich(
                           TextSpan(
-                            text: "I agree to the ",
-                            style: AppTypography.caption,
+                            text: 'Already a member? ',
+                            style: AppTypography.body,
                             children: [
                               WidgetSpan(
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () => Navigator.pop(context),
                                   child: Text(
-                                    "Terms of Sevice",
-                                    style: AppTypography.caption.copyWith(
+                                    'Sign In',
+                                    style: AppTypography.body.copyWith(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -220,54 +296,9 @@ class _SignUpViewState extends State<SignUpView> {
                             ],
                           ),
                         ),
-                      ],
-                    ),
-
-                    if (_errorMessage != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        _errorMessage!,
-                        style: AppTypography.caption.copyWith(
-                          color: AppColors.error,
-                        ),
                       ),
                     ],
-
-                    const SizedBox(height: 16),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: AppButton(
-                        label: 'Sign Up',
-                        onPressed: _signUp,
-                        isLoading: _isloading,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-
-                    Center(
-                      child: Text.rich(
-                        TextSpan(
-                          text: 'Already a member? ',
-                          style: AppTypography.body,
-                          children: [
-                            WidgetSpan(
-                              child: GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                child: Text(
-                                  'Sign In',
-                                  style: AppTypography.body.copyWith(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],

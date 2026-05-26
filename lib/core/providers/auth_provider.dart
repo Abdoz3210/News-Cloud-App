@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app/core/services/secure_storage_secvice.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,53 @@ class AuthProvider extends ChangeNotifier {
   final _secureStorage = SecureStorageSecvice.instance;
   User? get curentUser => _auth.currentUser;
   bool get isLoggedIn => _auth.currentUser != null;
+
+  String get displayName =>
+      _auth.currentUser?.displayName ?? 'Chronicler Member';
+
+  String? get userEmail => _auth.currentUser?.email;
+
+  String? get photoURL => _auth.currentUser?.photoURL;
+
+  String get joinDate {
+    final date = _auth.currentUser?.metadata.creationTime;
+    if (date == null) return '-';
+    final months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return '${months[date.month - 1]} ${date.year}';
+  }
+
+  Future<String?> updateDisplayName(String name) async {
+    try {
+      await _auth.currentUser?.updateDisplayName(name);
+      notifyListeners();
+      return null;
+    } catch (e) {
+      return 'Failed to update name. Try again.';
+    }
+  }
+
+  Future<String?> updatePhotoURL(String url) async {
+    try {
+      await _auth.currentUser?.updatePhotoURL(url);
+      notifyListeners();
+      return null;
+    } catch (e) {
+      return 'Failed to update photo, Try again.';
+    }
+  }
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
