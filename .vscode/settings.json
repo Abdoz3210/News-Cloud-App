@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/abdosalah/Abdos/flutter/news_app/linux",
+    "cmake.sourceDirectory": "/home/abdosalah/Abdos/flutter/News-Cloud-App/linux",
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
 
     "code-runner.executorMap": {
