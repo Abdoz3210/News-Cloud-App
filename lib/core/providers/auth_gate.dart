@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
-import 'package:news_app/core/providers/auth_gate.dart';
 import 'package:news_app/views/main_view.dart';
 import 'package:news_app/views/auth/sign_in_view.dart';
+import 'package:provider/provider.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
@@ -22,18 +21,18 @@ class _AuthGateState extends State<AuthGate> {
       const Duration(minutes: 30),
       (_) => context.read<AuthProvider>().handleTokenExpiry(),
     );
+  }
 
-    @override
-    void initState() {
-      super.initState();
-      _startTokenCheck();
-    }
+  @override
+  void initState() {
+    super.initState();
+    _startTokenCheck();
+  }
 
-    @override
-    void dispose() {
-      _tokenTimer?.cancel();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    _tokenTimer?.cancel();
+    super.dispose();
   }
 
   @override

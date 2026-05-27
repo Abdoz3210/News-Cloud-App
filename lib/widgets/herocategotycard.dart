@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Models/category_models.dart';
-import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/views/category_views.dart';
 

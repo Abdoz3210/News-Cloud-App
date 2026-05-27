@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/theme/app_colors.dart';
-import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/categorylist.dart';
-import 'package:news_app/widgets/components/app_bottom_nav.dart';
-import 'package:news_app/widgets/components/app_top_bar.dart';
-// import 'package:news_app/widgets/newscard.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
 
 class HomeView extends StatelessWidget {

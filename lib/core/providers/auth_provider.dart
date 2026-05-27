@@ -1,11 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app/core/services/secure_storage_secvice.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/core/services/storage_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _secureStorage = SecureStorageSecvice.instance;
+  final _storageService = StorageService.instance;
+
   User? get curentUser => _auth.currentUser;
   bool get isLoggedIn => _auth.currentUser != null;
 
@@ -46,13 +48,48 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<String?> updatePhotoURL(String url) async {
+  Future<String?> uploadAndUpdatePhotoURL() async {
+    final file = await _storageService.pickImageFromGallery();
+    if (file == null) return null;
+
+    final downloadUrl = await _storageService.uploadProfilePhoto(
+      userId: _auth.currentUser!.uid,
+      file: file,
+    );
+
+    if (downloadUrl == null) return 'Failed to upload photo, Try again.';
+
+    await _auth.currentUser?.updatePhotoURL(downloadUrl);
+    notifyListeners();
+    return null;
+  }
+
+  Future<String?> updateEmail(String newEmail) async {
     try {
-      await _auth.currentUser?.updatePhotoURL(url);
+      await _auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
       notifyListeners();
       return null;
-    } catch (e) {
-      return 'Failed to update photo, Try again.';
+    } on FirebaseAuthException catch (e) {
+      return _mapError(e.code);
+    }
+  }
+
+  Future<String?> updatePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final credential = EmailAuthProvider.credential(
+        email: _auth.currentUser!.email!,
+        password: currentPassword,
+      );
+
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+
+      await _auth.currentUser!.updatePassword(newPassword);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return _mapError(e.code);
     }
   }
 
@@ -112,12 +149,14 @@ class AuthProvider extends ChangeNotifier {
 
   String _mapError(String code) {
     switch (code) {
-      case 'user_notfound':
-        return 'No accouunt Found with this email.';
-      case 'worng-password':
-        return 'Incorrect password, Try again.';
+      case 'user-not-found':
+        return 'No account found with this email.';
+      case 'wrong-password':
+        return 'Incorrect password. Try again.';
       case 'invalid-email':
         return 'Please enter a valid email address.';
+      case 'invalid-credential':
+        return 'Incorrect email or password.';
       case 'too-many-requests':
         return 'Too many attempts. Try again later.';
       case 'email-already-in-use':
@@ -126,8 +165,10 @@ class AuthProvider extends ChangeNotifier {
         return 'Password must be at least 6 characters.';
       case 'network-request-failed':
         return 'No internet connection. Try again.';
+      case 'requires-recent-login':
+        return 'Please sign in again before changing your password.';
       default:
-        return ' Something went wrong, Try agfin later.....';
+        return 'Something went wrong. Try again.';
     }
   }
 }

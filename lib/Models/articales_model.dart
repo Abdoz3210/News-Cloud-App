@@ -12,7 +12,7 @@ class ArticalModel {
     required this.title,
   });
 
-  factory ArticalModel.fromjson(json) {
+  factory ArticalModel.fromjson(dynamic json) {
     return ArticalModel(
       aurther: json['author'],
       content: json['content'],

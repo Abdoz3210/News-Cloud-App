@@ -1,6 +1,3 @@
-import 'dart:io';
-
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
@@ -19,7 +16,7 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _userSection(),
+            _UserSection(),
 
             const SizedBox(height: 24),
             Padding(
@@ -99,8 +96,8 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
-class _userSection extends StatelessWidget {
-  const _userSection();
+class _UserSection extends StatelessWidget {
+  const _UserSection();
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +142,6 @@ class _userSection extends StatelessWidget {
 
 class _DrawerItem extends StatelessWidget {
   const _DrawerItem({
-    super.key,
     required this.icon,
     required this.label,
     required this.onTap,
@@ -167,7 +163,7 @@ class _DrawerItem extends StatelessWidget {
       leading: Icon(icon, color: color),
       title: Text(label, style: AppTypography.titleMd.copyWith(color: color)),
       tileColor: isActive
-          ? AppColors.primary.withOpacity(0.1)
+          ? AppColors.primary.withValues(alpha:0.1)
           : Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onTap: onTap,

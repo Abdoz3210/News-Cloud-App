@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/views/home_views.dart';
 import 'package:news_app/views/explore_view.dart';
