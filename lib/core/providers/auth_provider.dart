@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:news_app/core/services/notification_service.dart';
 import 'package:news_app/core/services/secure_storage_secvice.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/core/services/storage_service.dart';
@@ -111,6 +112,7 @@ class AuthProvider extends ChangeNotifier {
   Future<void> signOut() async {
     await _auth.signOut();
     await _secureStorage.clearAll();
+    await NotificationService.instance.clearAll();
     notifyListeners();
   }
 

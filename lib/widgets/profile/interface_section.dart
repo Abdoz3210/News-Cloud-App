@@ -27,13 +27,11 @@ class _InterfaceSectionState extends State<InterfaceSection> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
-    // ↑ watch — rebuilds when theme changes
 
     return SectionCard(
       title: 'Interface',
       icon: Icons.language_rounded,
       children: [
-        // ── Language selector ──────────────────────────
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -79,16 +77,11 @@ class _InterfaceSectionState extends State<InterfaceSection> {
         const SettingsDivider(),
         const SizedBox(height: 16),
 
-        // ── Dark Mode toggle ───────────────────────────
         SettingRow(
           label: 'Dark Mode',
           trailling: Switch(
             value: themeProvider.isDark,
-            //activeThumbColor: AppColors.primary,
             onChanged: (value) => themeProvider.toggleTheme(value),
-            // ↑ directly calls ThemeProvider — no setState needed
-            // ↑ ThemeProvider notifies listeners → MyApp rebuilds
-            // ↑ MaterialApp.themeMode changes → entire app re-themes
           ),
           onTap: null,
         ),

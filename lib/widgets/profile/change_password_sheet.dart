@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
+import 'package:news_app/core/utils/validators.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/components/app_button.dart';
 import 'package:news_app/widgets/components/app_text_form_field.dart';
+import 'package:news_app/widgets/components/password_strenght_indicator.dart';
 import 'package:provider/provider.dart';
-
-
-
-
-
-
-
 
 class ChangePasswordSheet extends StatefulWidget {
   const ChangePasswordSheet({super.key});
 
   @override
-  State<ChangePasswordSheet> createState() => ChangePasswordSheetState();
+  State<ChangePasswordSheet> createState() => _ChangePasswordSheetState();
 }
 
-class ChangePasswordSheetState extends State<ChangePasswordSheet> {
+class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
+  late String _passwordStrenght = '';
   bool _obscureCurrent = true;
-  bool _obscureNew = true;
+  bool _obsecureNew = true;
   bool _isLoading = false;
   String? _error;
 
@@ -48,16 +44,19 @@ class ChangePasswordSheetState extends State<ChangePasswordSheet> {
 
     if (!mounted) return;
 
-    setState(() => _isLoading = false);
+    setState(() {
+      _isLoading = false;
+    });
 
     if (error != null) {
-      setState(() => _error = error);
+      setState(() {
+        _error = error;
+      });
     } else {
       Navigator.pop(context);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password updated successfully!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Password update successfully!')));
     }
   }
 
@@ -70,13 +69,12 @@ class ChangePasswordSheetState extends State<ChangePasswordSheet> {
         top: 24,
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
       ),
+
       child: Column(
         mainAxisSize: MainAxisSize.min,
-
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Change Password', style: AppTypography.headline),
-          const SizedBox(height: 24),
 
           AppTextFormField(
             label: 'Current Password',
@@ -100,19 +98,23 @@ class ChangePasswordSheetState extends State<ChangePasswordSheet> {
           AppTextFormField(
             label: 'New Password',
             controller: _newPasswordController,
-            obscureText: _obscureNew,
-            textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => _changePassword(),
+            obscureText: _obsecureNew,
+            validator: Validators.passwordStrong,
+            onChanged: (value) => setState(() => _passwordStrenght = value),
+            textInputAction: TextInputAction.next,
             suffixIcon: IconButton(
               icon: Icon(
-                _obscureNew
+                _obsecureNew
                     ? Icons.visibility_outlined
                     : Icons.visibility_off_outlined,
                 color: AppColors.onSurfaceVariant,
               ),
-              onPressed: () => setState(() => _obscureNew = !_obscureNew),
+              onPressed: () => setState(() => _obsecureNew = !_obsecureNew),
             ),
           ),
+          PasswordStrenghtIndicator(password: _passwordStrenght),
+
+          const SizedBox(height: 12),
 
           if (_error != null) ...[
             const SizedBox(height: 8),
@@ -121,15 +123,14 @@ class ChangePasswordSheetState extends State<ChangePasswordSheet> {
               style: AppTypography.caption.copyWith(color: AppColors.error),
             ),
           ],
-
           const SizedBox(height: 24),
 
           SizedBox(
             width: double.infinity,
             child: AppButton(
               label: 'Update Password',
-              isLoading: _isLoading,
               onPressed: _changePassword,
+              isLoading: _isLoading,
             ),
           ),
         ],

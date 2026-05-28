@@ -9,6 +9,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthProvider>().curentUser;
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       width: MediaQuery.sizeOf(context).width * 0.75,
@@ -16,7 +17,7 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _UserSection(),
+            _UserSection(photoUrl: user?.photoURL),
 
             const SizedBox(height: 24),
             Padding(
@@ -33,28 +34,28 @@ class AppDrawer extends StatelessWidget {
             _DrawerItem(
               icon: Icons.public_rounded,
               label: "World News",
-              isActive: true,
+              isActive: false,
               onTap: () => Navigator.pop(context),
             ),
             const SizedBox(height: 8),
             _DrawerItem(
               icon: Icons.business_center_outlined,
               label: "Business",
-              isActive: true,
+              isActive: false,
               onTap: () => Navigator.pop(context),
             ),
             const SizedBox(height: 8),
             _DrawerItem(
               icon: Icons.palette_outlined,
               label: "Culture",
-              isActive: true,
+              isActive: false,
               onTap: () => Navigator.pop(context),
             ),
             const SizedBox(height: 8),
             _DrawerItem(
               icon: Icons.bookmark_outline_rounded,
               label: "Saved Stories",
-              isActive: true,
+              isActive: false,
               onTap: () => Navigator.pop(context),
             ),
             const Spacer(),
@@ -97,7 +98,8 @@ class AppDrawer extends StatelessWidget {
 }
 
 class _UserSection extends StatelessWidget {
-  const _UserSection();
+  const _UserSection({required this.photoUrl});
+  final String? photoUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -108,23 +110,37 @@ class _UserSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 32,
-            backgroundColor: AppColors.primary,
-            child: Icon(
-              Icons.person_rounded,
-              size: 32,
-              color: AppColors.onPrimary,
+          DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: AppColors.primaryGradient,
+            ),
+            child: CircleAvatar(
+              radius: 32,
+              backgroundColor: Colors.transparent,
+              backgroundImage: photoUrl != null
+                  ? NetworkImage(photoUrl!)
+                  : null,
+              child: photoUrl == null
+                  ? Icon(
+                      Icons.person_rounded,
+                      size: 32,
+                      color: AppColors.onSurfaceVariant,
+                    )
+                  : null,
             ),
           ),
 
           const SizedBox(height: 12),
-          Text('Abdos', style: AppTypography.titleLg),
+          Text(
+            context.watch<AuthProvider>().displayName,
+            style: AppTypography.titleLg,
+          ),
           const SizedBox(height: 4),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              gradient: AppColors.primaryGradient,
               borderRadius: BorderRadius.circular(99),
             ),
             child: Text(
@@ -160,10 +176,11 @@ class _DrawerItem extends StatelessWidget {
         ? AppColors.primary
         : null;
     return ListTile(
+      splashColor: AppColors.primary,
       leading: Icon(icon, color: color),
       title: Text(label, style: AppTypography.titleMd.copyWith(color: color)),
       tileColor: isActive
-          ? AppColors.primary.withValues(alpha:0.1)
+          ? AppColors.primary.withValues(alpha: 0.1)
           : Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onTap: onTap,

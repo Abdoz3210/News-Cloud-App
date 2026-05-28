@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/widgets/profile/go_premium_card.dart';
 import 'package:news_app/widgets/profile/interface_section.dart';
+import 'package:news_app/widgets/profile/notification_section.dart';
 import 'package:news_app/widgets/profile/personal_info_dection.dart';
 import 'package:news_app/widgets/profile/security_section.dart';
 import 'package:news_app/widgets/profile/user_header_view.dart';
@@ -20,6 +21,7 @@ class ProfileView extends StatelessWidget {
           PersonalInfoDection(),
           SecuritySection(),
           InterfaceSection(),
+          NotificationSection(),
           SizedBox(height: 16),
         ],
       ),
