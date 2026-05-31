@@ -1,100 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:news_app/core/models/user_model.dart';
 import 'package:news_app/core/services/notification_service.dart';
-import 'package:news_app/core/services/secure_storage_secvice.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/core/services/storage_service.dart';
+import 'package:news_app/core/services/user_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _secureStorage = SecureStorageSecvice.instance;
-  final _storageService = StorageService.instance;
+  final _userService = UserService.instance;
 
   User? get curentUser => _auth.currentUser;
   bool get isLoggedIn => _auth.currentUser != null;
-
-  String get displayName =>
-      _auth.currentUser?.displayName ?? 'Chronicler Member';
-
-  String? get userEmail => _auth.currentUser?.email;
-
-  String? get photoURL => _auth.currentUser?.photoURL;
-
-  String get joinDate {
-    final date = _auth.currentUser?.metadata.creationTime;
-    if (date == null) return '-';
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${months[date.month - 1]} ${date.year}';
-  }
-
-  Future<String?> updateDisplayName(String name) async {
-    try {
-      await _auth.currentUser?.updateDisplayName(name);
-      notifyListeners();
-      return null;
-    } catch (e) {
-      return 'Failed to update name. Try again.';
-    }
-  }
-
-  Future<String?> uploadAndUpdatePhotoURL() async {
-    final file = await _storageService.pickImageFromGallery();
-    if (file == null) return null;
-
-    final downloadUrl = await _storageService.uploadProfilePhoto(
-      userId: _auth.currentUser!.uid,
-      file: file,
-    );
-
-    if (downloadUrl == null) return 'Failed to upload photo, Try again.';
-
-    await _auth.currentUser?.updatePhotoURL(downloadUrl);
-    notifyListeners();
-    return null;
-  }
-
-  Future<String?> updateEmail(String newEmail) async {
-    try {
-      await _auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
-      notifyListeners();
-      return null;
-    } on FirebaseAuthException catch (e) {
-      return _mapError(e.code);
-    }
-  }
-
-  Future<String?> updatePassword({
-    required String currentPassword,
-    required String newPassword,
-  }) async {
-    try {
-      final credential = EmailAuthProvider.credential(
-        email: _auth.currentUser!.email!,
-        password: currentPassword,
-      );
-
-      await _auth.currentUser!.reauthenticateWithCredential(credential);
-
-      await _auth.currentUser!.updatePassword(newPassword);
-      return null;
-    } on FirebaseAuthException catch (e) {
-      return _mapError(e.code);
-    }
-  }
-
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  UserModel? get userModel => _userService.getProfile();
+
+  String get displayName => userModel?.displayName ?? 'Chronicler Member';
+
+  String? get userEmail => userModel?.email;
+
+  String? get photoURL => userModel?.photoURL;
+
+  String get joinDate => userModel?.joinDate ?? '--';
 
   Future<String?> signIn({
     required String email,
@@ -102,7 +28,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      await _secureStorage.saveUserEmail(email);
+      notifyListeners();
       return null;
     } on FirebaseAuthException catch (e) {
       return _mapError(e.code);
@@ -110,8 +36,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut() async {
-    await _auth.signOut();
-    await _secureStorage.clearAll();
+    await _userService.signOut();
     await NotificationService.instance.clearAll();
     notifyListeners();
   }
@@ -127,11 +52,36 @@ class AuthProvider extends ChangeNotifier {
         password: password,
       );
       await credential.user?.updateDisplayName(username);
-      await _secureStorage.saveUserEmail(email);
       return null;
     } on FirebaseAuthException catch (e) {
       return _mapError(e.code);
     }
+  }
+
+  Future<String?> updateDisplayName(String name) async {
+    final error = await _userService.updateDisplayName(name);
+    if (error == null) notifyListeners();
+    return null;
+  }
+
+  Future<String?> updateEmail(String newEmail) async {
+    final error = await _userService.updateEmail(newEmail);
+    if (error == null) notifyListeners();
+    return error;
+  }
+
+  Future<String?> updatePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    return await _userService.changePassword(
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+    );
+  }
+
+  Future<String?> deleteAccount({required String password}) async {
+    return await _userService.deleteAccount(password: password);
   }
 
   Future<String?> getToken() async {

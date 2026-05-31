@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/widgets/profile/delete_account_button.dart';
 import 'package:news_app/widgets/profile/go_premium_card.dart';
 import 'package:news_app/widgets/profile/interface_section.dart';
 import 'package:news_app/widgets/profile/notification_section.dart';
@@ -22,6 +23,7 @@ class ProfileView extends StatelessWidget {
           SecuritySection(),
           InterfaceSection(),
           NotificationSection(),
+          DeleteAccountButton(),
           SizedBox(height: 16),
         ],
       ),
