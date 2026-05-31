@@ -22,7 +22,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
           actions: actions,
           backgroundColor: Theme.of(
             context,
-          ).colorScheme.surface.withOpacity(0.5),
+          ).colorScheme.surface.withValues(alpha: 0.5),
           elevation: 0,
           scrolledUnderElevation: 0,
         ),

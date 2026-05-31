@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/core/utils/validators.dart';
 import 'package:news_app/widgets/components/app_text_form_field.dart';
@@ -10,23 +7,22 @@ import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/components/app_button.dart';
-import 'package:news_app/widgets/components/app_input.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
 
   @override
-  State<SignUpView> createState() => _SignUpViewState();
+  State<SignUpView> createState() => SignUpViewState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class SignUpViewState extends State<SignUpView> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   bool _obscurePassword = true;
-  bool _obscureConfirms = true;
+//  bool _obscureConfirms = true;
   bool _isloading = false;
   bool _acceptedTerms = false;
   String? _errorMessage;

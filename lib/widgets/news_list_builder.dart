@@ -14,7 +14,9 @@ class NewsListBuilder extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsListBuilder> {
-  var future;
+  Future<List<ArticalModel>>? future;
+
+
   @override
   void initState() {
     // getGeneralNews();

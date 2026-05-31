@@ -27,12 +27,12 @@ class AppBottomNav extends StatelessWidget {
   Widget _buildNavBar(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.3),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
       ),
       child: NavigationBar(
         selectedIndex: currentIndex,
         backgroundColor: Colors.transparent,
-        indicatorColor: AppColors.primary.withOpacity(0.15),
+        indicatorColor: AppColors.primary.withValues(alpha: 0.15),
         onDestinationSelected: (index) => onTap(index),
         destinations: const [
           NavigationDestination(

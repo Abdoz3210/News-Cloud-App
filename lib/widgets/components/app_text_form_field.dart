@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 

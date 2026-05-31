@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/views/home_views.dart';
 import 'package:news_app/views/explore_view.dart';
@@ -21,11 +20,11 @@ class _MainViewState extends State<MainView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Widget> _screens = const [
+    ProfileView(),
     HomeView(),
     ExploreView(),
     SearchView(),
     SavedView(),
-    ProfileView(),
   ];
 
   @override

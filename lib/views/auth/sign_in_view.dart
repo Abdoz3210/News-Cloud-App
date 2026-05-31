@@ -7,7 +7,7 @@ import 'package:news_app/core/providers/auth_provider.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/widgets/components/app_button.dart';
-import 'package:news_app/widgets/components/app_input.dart';
+
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
