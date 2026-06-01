@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/Models/articales_model.dart';
 import 'package:news_app/core/services/getnews.dart';
 import 'package:news_app/theme/typography.dart';
+import 'package:news_app/widgets/hero_skeleton.dart';
 import 'package:news_app/widgets/news_list.dart';
 
 class NewsListBuilder extends StatefulWidget {
@@ -15,7 +16,6 @@ class NewsListBuilder extends StatefulWidget {
 
 class _NewsListState extends State<NewsListBuilder> {
   Future<List<ArticalModel>>? future;
-
 
   @override
   void initState() {
@@ -42,10 +42,7 @@ class _NewsListState extends State<NewsListBuilder> {
           );
         } else {
           return SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(150.0),
-              child: Center(child: CircularProgressIndicator()),
-            ),
+            child: Column(children: [HeroSkeleton(), HeroSkeleton()]),
           );
         }
       },

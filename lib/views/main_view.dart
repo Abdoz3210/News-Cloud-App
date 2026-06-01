@@ -20,11 +20,11 @@ class _MainViewState extends State<MainView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Widget> _screens = const [
-    ProfileView(),
     HomeView(),
     ExploreView(),
     SearchView(),
     SavedView(),
+    ProfileView(),
   ];
 
   @override

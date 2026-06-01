@@ -44,7 +44,7 @@ class NewsCard extends StatelessWidget {
             ),
           ),
           Text(
-            artical.title,
+            artical.title!,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: AppTypography.headline,
