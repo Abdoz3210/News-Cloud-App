@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Models/articales_model.dart';
 import 'package:news_app/widgets/hero_article_card.dart';
-import 'package:news_app/widgets/newscard.dart';
 
 class NewsList extends StatelessWidget {
   const NewsList({required this.articals, super.key});

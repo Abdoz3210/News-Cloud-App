@@ -15,12 +15,22 @@ class NewsListBuilder extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsListBuilder> {
-  Future<List<ArticalModel>>? future;
+  Future<List<ArticalModel>>? _future;
+
+  @override
+  void didUpdateWidget(NewsListBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.caregory != widget.caregory) {
+      setState(() {
+        _future = NewsServce(Dio()).getGeneral(category: widget.caregory);
+      });
+    }
+  }
 
   @override
   void initState() {
     // getGeneralNews();
-    future = NewsServce(Dio()).getGeneral(category: widget.caregory);
+    _future = NewsServce(Dio()).getGeneral(category: widget.caregory);
     super.initState();
   }
 
@@ -29,7 +39,7 @@ class _NewsListState extends State<NewsListBuilder> {
     // final double height = MediaQuery.sizeOf(context).height;
     // final double width = MediaQuery.sizeOf(context).width;
     return FutureBuilder<List<ArticalModel>>(
-      future: future,
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return NewsList(articals: snapshot.data ?? []);
