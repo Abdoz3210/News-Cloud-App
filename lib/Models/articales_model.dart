@@ -1,4 +1,3 @@
-
 class ArticalModel {
   final String? image;
   final String? title;
@@ -25,13 +24,34 @@ class ArticalModel {
     final wordCount = content!.trim().split(RegExp(r'\s+')).length;
 
     final minutes = (wordCount / 200).ceil();
-    return minutes.clamp(1, 30);
+    return minutes;
   }
 
   String get sourceName {
     if (source == null) return 'Unknown';
     if (source is Map) return source['name'] ?? 'Unknown';
+    if (source is Map) return source['id'] ?? 'Unknown';
     return source.toString();
+  }
+
+  String get relativeTime {
+    if (publishedAt == null) return '';
+
+    final published = DateTime.tryParse(publishedAt!);
+
+    if (published == null) return '';
+
+    final difference = DateTime.now().difference(published);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} min ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hrs ago';
+    } else {
+      return '${difference.inDays} days ago';
+    }
   }
 
   factory ArticalModel.fromjson(dynamic json) {

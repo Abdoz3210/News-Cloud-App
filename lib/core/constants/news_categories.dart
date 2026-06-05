@@ -6,7 +6,6 @@ class NewsCategory {
 
 const List<NewsCategory> NewsCategories = [
   NewsCategory(label: 'Top Stories', apiValue: 'general'),
-  NewsCategory(label: 'World News', apiValue: 'sources'),
   NewsCategory(label: 'Business', apiValue: 'business'),
   NewsCategory(label: 'Technology', apiValue: 'technology'),
   NewsCategory(label: 'Science', apiValue: 'science'),

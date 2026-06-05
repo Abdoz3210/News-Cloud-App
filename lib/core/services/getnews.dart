@@ -28,4 +28,24 @@ class NewsServce {
     // print(articalList);
     return articalList;
   }
+
+  Future<List<ArticalModel>> getHeadlines({int pageSize = 2}) async {
+    try {
+      final Response response = await dio.get(
+        'https://newsapi.org/v2/top-headlines',
+        queryParameters: {
+          'apiKey': '232668304d4342d5a1a6407d88450a86',
+          'country': 'us',
+          'pagesize': pageSize,
+        },
+      );
+      final List articles = response.data['articles'];
+      return articles
+          .map((articles) => ArticalModel.fromjson(articles))
+          .toList();
+    } catch (e) {
+      print('Daily Pulse error: $e');
+      return [];
+    }
+  }
 }
