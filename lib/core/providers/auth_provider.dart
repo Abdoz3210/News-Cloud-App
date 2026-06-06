@@ -1,17 +1,22 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app/core/models/user_model.dart';
-import 'package:news_app/core/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/core/services/user_service.dart';
+import 'package:news_app/core/services/realtime_database_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _userService = UserService.instance;
+  final _dbService = RealtimeDatabaseService.instance;
 
+  String? _photoBase64;
   User? get curentUser => _auth.currentUser;
   bool get isLoggedIn => _auth.currentUser != null;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
-
+  String? get photoBase64 => _photoBase64;
+  StreamSubscription? _photoSubscription;
   UserModel? get userModel => _userService.getProfile();
 
   String get displayName => userModel?.displayName ?? 'Chronicler Member';
@@ -36,8 +41,11 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut() async {
+    await _photoSubscription?.cancel();
+    _photoSubscription = null;
     await _userService.signOut();
-    await NotificationService.instance.clearAll();
+    _photoBase64 = null;
+    // await NotificationService.instance.clearAll();
     notifyListeners();
   }
 
@@ -81,7 +89,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<String?> deleteAccount({required String password}) async {
-    return await _userService.deleteAccount(password: password);
+    final uid = _auth.currentUser?.uid;
+    final error = await _userService.deleteAccount(password: password);
+
+    if (error != null) return error;
+    if (uid != null) {
+      await _dbService.deleteUserData(uid);
+    }
+    return null;
   }
 
   Future<String?> getToken() async {
@@ -97,6 +112,38 @@ class AuthProvider extends ChangeNotifier {
     if (token == null) {
       await signOut();
     }
+  }
+
+  Future<void> loadUserPhoto() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    // await Future.delayed(const Duration(milliseconds: 500));
+    // _photoBase64 = await _dbService.getUserPhoto(uid);
+    await _photoSubscription?.cancel();
+    _photoSubscription = _dbService.watchUserPhoto(uid).listen((base64) {
+      _photoBase64 = base64;
+      notifyListeners();
+    });
+    // print('loaded photo: ${_photoBase64 != null}');
+    // notifyListeners();
+  }
+
+  Future<String?> uploadAndUpdatePhoto() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return 'Not signed in.';
+
+    final file = await _dbService.pickImageFromGallery();
+    if (file == null) return null;
+
+    final error = await _dbService.saveUserPhoto(userId: uid, file: file);
+    if (error != null) return error;
+
+    final bytes = await file.readAsBytes();
+    _photoBase64 = base64Encode(bytes);
+    // _photoBase64 = await _dbService.getUserPhoto(uid);
+    notifyListeners();
+
+    return null;
   }
 
   String _mapError(String code) {

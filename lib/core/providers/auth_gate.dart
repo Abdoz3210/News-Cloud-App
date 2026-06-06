@@ -46,6 +46,12 @@ class _AuthGateState extends State<AuthGate> {
           );
         }
         if (snapshot.hasData) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              print('loading user photo... ');
+              context.read<AuthProvider>().loadUserPhoto();
+            }
+          });
           return const MainView();
         }
 

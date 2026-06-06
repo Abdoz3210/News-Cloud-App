@@ -22,7 +22,7 @@ class UserHeader extends StatelessWidget {
 
           Stack(
             children: [
-              Avatar(photoUrl: user?.photoURL),
+              Avatar(),
               Positioned(bottom: 0, right: 0, child: EditAvatarButton()),
             ],
           ),

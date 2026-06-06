@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/widgets/daily_pulse.dart';
+import 'package:news_app/widgets/editorial_pull_quote.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
 import 'package:news_app/widgets/topic_filter_chips.dart';
 
@@ -39,8 +40,9 @@ class _HomeViewState extends State<HomeView> {
                 setState(() => _selectedCategory = category),
           ),
         ),
-        SliverToBoxAdapter(child: DailyPulseSection()),
         NewsListBuilder(caregory: _selectedCategory),
+        SliverToBoxAdapter(child: DailyPulseSection()),
+        SliverToBoxAdapter(child: EditorialPullQuote()),
         // NewsCard(),
       ],
     );
