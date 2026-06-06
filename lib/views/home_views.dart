@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/widgets/categorylist.dart';
+import 'package:news_app/widgets/daily_pulse.dart';
+import 'package:news_app/widgets/editorial_pull_quote.dart';
 import 'package:news_app/widgets/news_list_builder.dart';
+import 'package:news_app/widgets/topic_filter_chips.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  String _selectedCategory = 'general';
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +33,16 @@ class HomeView extends StatelessWidget {
         //     ],
         //   ),
         // ),
-        SliverToBoxAdapter(child: CategoryList()),
-        NewsListBuilder(caregory: 'general'),
+        SliverToBoxAdapter(
+          child: TopicFilterChips(
+            selectedCategory: _selectedCategory,
+            onCategoryChanged: (category) =>
+                setState(() => _selectedCategory = category),
+          ),
+        ),
+        NewsListBuilder(caregory: _selectedCategory),
+        SliverToBoxAdapter(child: DailyPulseSection()),
+        SliverToBoxAdapter(child: EditorialPullQuote()),
         // NewsCard(),
       ],
     );

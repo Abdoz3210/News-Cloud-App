@@ -11,6 +11,7 @@ import 'package:news_app/firebase_options.dart';
 final dio = Dio();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);

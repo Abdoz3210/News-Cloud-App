@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/Models/articales_model.dart';
 import 'package:news_app/core/services/getnews.dart';
 import 'package:news_app/theme/typography.dart';
+import 'package:news_app/widgets/hero_skeleton.dart';
 import 'package:news_app/widgets/news_list.dart';
 
 class NewsListBuilder extends StatefulWidget {
@@ -14,13 +15,22 @@ class NewsListBuilder extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsListBuilder> {
-  Future<List<ArticalModel>>? future;
+  Future<List<ArticalModel>>? _future;
 
+  @override
+  void didUpdateWidget(NewsListBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.caregory != widget.caregory) {
+      setState(() {
+        _future = NewsServce(Dio()).getGeneral(category: widget.caregory);
+      });
+    }
+  }
 
   @override
   void initState() {
     // getGeneralNews();
-    future = NewsServce(Dio()).getGeneral(category: widget.caregory);
+    _future = NewsServce(Dio()).getGeneral(category: widget.caregory);
     super.initState();
   }
 
@@ -29,7 +39,7 @@ class _NewsListState extends State<NewsListBuilder> {
     // final double height = MediaQuery.sizeOf(context).height;
     // final double width = MediaQuery.sizeOf(context).width;
     return FutureBuilder<List<ArticalModel>>(
-      future: future,
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return NewsList(articals: snapshot.data ?? []);
@@ -42,10 +52,7 @@ class _NewsListState extends State<NewsListBuilder> {
           );
         } else {
           return SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(150.0),
-              child: Center(child: CircularProgressIndicator()),
-            ),
+            child: Column(children: [HeroSkeleton(), HeroSkeleton()]),
           );
         }
       },

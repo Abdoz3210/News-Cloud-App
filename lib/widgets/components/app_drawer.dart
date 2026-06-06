@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
@@ -9,7 +12,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthProvider>().curentUser;
+    // final user = context.watch<AuthProvider>().curentUser;
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       width: MediaQuery.sizeOf(context).width * 0.75,
@@ -17,7 +20,7 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _UserSection(photoUrl: user?.photoURL),
+            _UserSection(),
 
             const SizedBox(height: 24),
             Padding(
@@ -98,11 +101,20 @@ class AppDrawer extends StatelessWidget {
 }
 
 class _UserSection extends StatelessWidget {
-  const _UserSection({required this.photoUrl});
-  final String? photoUrl;
+  const _UserSection();
+  // final String? photoUrl;
 
   @override
   Widget build(BuildContext context) {
+    final photoBase64 = context.watch<AuthProvider>().photoBase64;
+    Uint8List? imageBytes;
+    if (photoBase64 != null) {
+      try {
+        imageBytes = base64Decode(photoBase64);
+      } catch (e) {
+        imageBytes = null;
+      }
+    }
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -118,10 +130,10 @@ class _UserSection extends StatelessWidget {
             child: CircleAvatar(
               radius: 32,
               backgroundColor: Colors.transparent,
-              backgroundImage: photoUrl != null
-                  ? NetworkImage(photoUrl!)
+              backgroundImage: imageBytes != null
+                  ? MemoryImage(imageBytes)
                   : null,
-              child: photoUrl == null
+              child: imageBytes != null
                   ? Icon(
                       Icons.person_rounded,
                       size: 32,
