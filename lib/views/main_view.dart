@@ -4,6 +4,7 @@ import 'package:news_app/views/explore_view.dart';
 import 'package:news_app/views/search_view.dart';
 import 'package:news_app/views/saved_view.dart';
 import 'package:news_app/views/profile_view.dart';
+import 'package:news_app/widgets/amber_category_header.dart';
 import 'package:news_app/widgets/components/app_bottom_nav.dart';
 import 'package:news_app/widgets/components/app_drawer.dart';
 import 'package:news_app/widgets/components/app_top_bar.dart';
@@ -32,19 +33,20 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: const AppDrawer(),
-      appBar: AppTopBar(
-        title: 'The Chronicler',
-        leading: IconButton(
-          icon: const Icon(Icons.menu_rounded),
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.person_outline_rounded),
-          ),
-        ],
-      ),
+      appBar: AmberCategoryHeader(title: 'home'),
+      //  AppTopBar(
+      //   title: 'The Chronicler',
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.menu_rounded),
+      //     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () {},
+      //       icon: Icon(Icons.person_outline_rounded),
+      //     ),
+      //   ],
+      // ),
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: AppBottomNav(
         currentIndex: _currentIndex,
