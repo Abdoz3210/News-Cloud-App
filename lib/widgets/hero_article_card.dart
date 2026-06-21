@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:news_app/Models/articales_model.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
+import 'package:news_app/views/news_detail_view.dart';
 
 class HeroArticleCard extends StatelessWidget {
   const HeroArticleCard({
     super.key,
     required this.artical,
-    required this.onTap,
+    // required this.onTap,
   });
   final ArticalModel artical;
-  final VoidCallback onTap;
+  // final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => NewsDetailView(articale: artical)),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.fromLTRB(8, 8, 16, 16),
         decoration: BoxDecoration(
@@ -197,7 +203,7 @@ class _MetadataRow extends StatelessWidget {
         const SizedBox(width: 4),
         Expanded(
           child: Text(
-            artical.aurthor ?? 'Unknown Author',
+            artical.author ?? 'Unknown Author',
             style: AppTypography.caption,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

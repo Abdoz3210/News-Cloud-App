@@ -1,15 +1,16 @@
 class ArticalModel {
   final String? image;
   final String? title;
-  final String? aurthor;
+  final String? author;
   final String? descriptation;
   final String? content;
   final String? url;
   final String? publishedAt;
   final dynamic source;
+  final String? category;
 
   ArticalModel({
-    this.aurthor,
+    this.author,
     this.content,
     this.descriptation,
     this.image,
@@ -17,6 +18,7 @@ class ArticalModel {
     this.url,
     this.publishedAt,
     this.source,
+    this.category,
   });
 
   int get readTimeMinutes {
@@ -54,16 +56,57 @@ class ArticalModel {
     }
   }
 
-  factory ArticalModel.fromjson(dynamic json) {
+  String get formattedDate {
+    if (publishedAt == null) return '';
+    final date = DateTime.tryParse(publishedAt!);
+    if (date == null) return '';
+    final months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+
+  List<String> get contentParagraphs {
+    if (content == null || content!.isEmpty) return [];
+
+    final cleaned = content!.replaceAll(RegExp(r'\[\+\d+ chars\]'), '');
+
+    return cleaned
+        .split('\n')
+        .map((p) => p.trim())
+        .where((p) => p.isNotEmpty)
+        .toList();
+  }
+
+  String get authorBio {
+    if (author == null) return 'A contributor to ${sourceName}.';
+    return '$author is a contributor covering stories for $sourceName, '
+        'exploring the intersection of culture, technology, and society.';
+  }
+
+  factory ArticalModel.fromjson(Map<String, dynamic> json, {String? category}) {
     return ArticalModel(
       title: json['title'],
-      aurthor: json['author'],
+      author: json['author'],
       content: json['content'],
       descriptation: json['description'],
       image: json['urlToImage'],
       url: json['url'],
       publishedAt: json['publishedAt'],
       source: json['source'],
+      category: category,
     );
   }
 }
