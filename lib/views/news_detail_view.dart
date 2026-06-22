@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:news_app/Models/articales_model.dart';
@@ -158,11 +160,39 @@ class _AuthorBioCard extends StatelessWidget {
 class _DropCapBody extends StatelessWidget {
   const _DropCapBody({required this.paragraphs});
 
-  final List<String>? paragraphs;
+  final List<String> paragraphs;
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text('aaa'));
+    if (paragraphs.isEmpty) {
+      return Text(
+        'Full article content is not available from this source.',
+        style: AppTypography.bodySerif.copyWith(
+          color: AppColors.onSurfaceVariant,
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(paragraphs.length, (index) {
+        final isFirst = index == 0;
+        final paragraph = paragraphs[index];
+
+        return Padding(padding: const EdgeInsets.only(bottom: 16),
+        child: isFirst ?_DropCapParagraph(text: paragraph) : Text(paragraph,style: AppTypography.bodySerif,),
+        );
+      }),
+    );
+  }
+}
+
+class _DropCapParagraph extends StatelessWidget{
+  const _DropCapParagraph({required this.text});
+  final String text;
+  
+  @override 
+  Widget build(BuildContext context){
+    return Container(child: Text(text),);
   }
 }
 
