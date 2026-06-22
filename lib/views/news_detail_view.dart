@@ -172,7 +172,30 @@ class _AuthorRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(article.authorBio));
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 20,
+          backgroundColor: AppColors.surfaceContainerHigh,
+          child: Icon(Icons.person_rounded, color: AppColors.onSurfaceVariant),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                article.author ?? 'UnKnown Author',
+                style: AppTypography.titleMd,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(article.formattedDate, style: AppTypography.caption),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
