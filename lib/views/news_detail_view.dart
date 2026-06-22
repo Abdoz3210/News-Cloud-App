@@ -15,8 +15,182 @@ class NewsDetailView extends StatefulWidget {
 }
 
 class _NewsDetailViewState extends State<NewsDetailView> {
+  late Future<List<ArticalModel>> _relatedFuture;
+  bool _isFollowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _relatedFuture = NewsServce(
+      Dio(),
+    ).getGeneral(category: widget.articale.category ?? 'general');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final article = widget.articale;
+    return Scaffold(
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            iconTheme: const IconThemeData(color: AppColors.onPrimary),
+            flexibleSpace: FlexibleSpaceBar(
+              background: _HeroImageWidgetGradient(image: article.image),
+            ),
+          ),
+
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _categoryPill(label: article.sourceName),
+                      const SizedBox(width: 12),
+                      Icon(
+                        Icons.schedule_rounded,
+                        size: 14,
+                        color: AppColors.onSurfaceVariant,
+                      ),
+                      const SizedBox(width: 4),
+
+                      Text(
+                        '${article.readTimeMinutes} Min Read',
+                        style: AppTypography.caption,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+                  Text(
+                    article.title ?? 'Untitled',
+                    style: AppTypography.displayLg,
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  _AuthorRow(article: article),
+
+                  const SizedBox(height: 24),
+
+                  _DropCapBody(paragraphs: article.contentParagraphs),
+
+                  const SizedBox(height: 24),
+
+                  if (article.descriptation != null)
+                    _styledBlockQuote(quote: article.descriptation),
+
+                  const SizedBox(height: 24),
+
+                  _AuthorBioCard(
+                    article: article,
+                    isFollowing: _isFollowing,
+                    onFollowToggle: () {
+                      setState(() {
+                        _isFollowing = !_isFollowing;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SliverToBoxAdapter(
+            child: _furtherReadingSection(
+              future: _relatedFuture,
+              currentArticalUrl: article.url,
+            ),
+          ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        ],
+      ),
+    );
+  }
+}
+
+class _furtherReadingSection extends StatelessWidget {
+  const _furtherReadingSection({
+    required this.future,
+    required this.currentArticalUrl,
+  });
+  final Future<List<ArticalModel>>? future;
+  final String? currentArticalUrl;
+  @override
+  Widget build(BuildContext context) {
+    return Placeholder();
+  }
+}
+
+class _styledBlockQuote extends StatelessWidget {
+  const _styledBlockQuote({required this.quote});
+  final String? quote;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text(quote!));
+  }
+}
+
+class _AuthorBioCard extends StatelessWidget {
+  const _AuthorBioCard({
+    required this.article,
+    this.isFollowing = false,
+    required this.onFollowToggle,
+  });
+  final ArticalModel article;
+  final bool isFollowing;
+  final VoidCallback onFollowToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text(article.author!));
+  }
+}
+
+class _DropCapBody extends StatelessWidget {
+  const _DropCapBody({required this.paragraphs});
+
+  final List<String>? paragraphs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text('aaa'));
+  }
+}
+
+class _AuthorRow extends StatelessWidget {
+  const _AuthorRow({required this.article});
+  final ArticalModel article;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text(article.authorBio));
+  }
+}
+
+class _HeroImageWidgetGradient extends StatelessWidget {
+  const _HeroImageWidgetGradient({required this.image});
+  final String? image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(fit: StackFit.expand);
+  }
+}
+
+class _categoryPill extends StatelessWidget {
+  const _categoryPill({required this.label});
+  final String label;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(height: 24, width: 240, child: const Placeholder());
   }
 }
