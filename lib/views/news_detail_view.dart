@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -170,7 +169,42 @@ class _RelatedArticalTile extends StatelessWidget {
   final ArticalModel article;
   @override
   Widget build(BuildContext context) {
-    return Placeholder();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => NewsDetailView(articale: article),
+            ),
+          );
+        },
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                width: 72,
+                height: 72,
+                child: article.image != null
+                    ? Image.network(article.image!, fit: BoxFit.cover)
+                    : Container(color: AppColors.surfaceContainerHigh),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                article.title ?? '',
+                style: AppTypography.titleMd,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -180,7 +214,32 @@ class _furtherReadingSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Placeholder();
+    return Column(
+      children: List.generate(
+        3,
+        (i) => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            children: [
+              Container(width: 72, height: 72),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Container(
+                  height: 14,
+                  color: AppColors.surfaceContainerHigh,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
