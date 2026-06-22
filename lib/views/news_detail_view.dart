@@ -182,7 +182,36 @@ class _HeroImageWidgetGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(fit: StackFit.expand);
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        if (image != null)
+          Image.network(
+            image!,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) => Container(
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+            ),
+          )
+        else
+          Container(color: Theme.of(context).colorScheme.surfaceContainerHigh),
+
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black.withValues(alpha: 0.4),
+                Colors.transparent,
+                Colors.black.withValues(alpha: 0.1),
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
