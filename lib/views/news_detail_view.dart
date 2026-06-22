@@ -206,7 +206,7 @@ class _HeroImageWidgetGradient extends StatelessWidget {
                 Colors.transparent,
                 Colors.black.withValues(alpha: 0.1),
               ],
-              stops: const [0.0, 0.5, 1.0],
+              // stops: const [0.0, 0.5, 1.0],
             ),
           ),
         ),
@@ -220,6 +220,16 @@ class _categoryPill extends StatelessWidget {
   final String label;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: 24, width: 240, child: const Placeholder());
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(99),
+      ),
+      child: Text(
+        label.toUpperCase(),
+        style: AppTypography.categoryTag.copyWith(color: AppColors.primary),
+      ),
+    );
   }
 }
