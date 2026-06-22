@@ -151,7 +151,7 @@ class _styledBlockQuote extends StatelessWidget {
 class _AuthorBioCard extends StatelessWidget {
   const _AuthorBioCard({
     required this.article,
-    this.isFollowing = false,
+    required this.isFollowing,
     required this.onFollowToggle,
   });
   final ArticalModel article;
@@ -160,7 +160,65 @@ class _AuthorBioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(article.author!));
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(16),
+      ),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: AppColors.surfaceContainerHigh,
+                child: Icon(
+                  Icons.person_rounded,
+                  color: AppColors.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'About ${article.author ?? ' the Author'}',
+                  style: AppTypography.titleMd,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(article.authorBio, style: AppTypography.body),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: onFollowToggle,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: isFollowing
+                    ? AppColors.onPrimary
+                    : AppColors.primary,
+                backgroundColor: isFollowing
+                    ? AppColors.primary
+                    : Colors.transparent,
+                side: BorderSide(color: AppColors.primary),
+                shape: const StadiumBorder(),
+              ),
+
+              child: Text(
+                isFollowing ? 'FOLLOWING' : 'FOLLOW AUTHOR',
+                style: AppTypography.buttonLabel.copyWith(
+                  color: isFollowing ? AppColors.onPrimary : AppColors.primary,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
