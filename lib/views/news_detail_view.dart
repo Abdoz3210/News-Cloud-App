@@ -124,10 +124,62 @@ class _furtherReadingSection extends StatelessWidget {
     required this.future,
     required this.currentArticalUrl,
   });
-  final Future<List<ArticalModel>>? future;
+  final Future<List<ArticalModel>> future;
   final String? currentArticalUrl;
   @override
   Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Further Reading', style: AppTypography.headline),
+          const SizedBox(height: 16),
+          FutureBuilder<List<ArticalModel>>(
+            future: future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const _furtherReadingSkeleton();
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const SizedBox.shrink();
+              }
+
+              final related = snapshot.data!
+                  .where((a) => a.url != currentArticalUrl)
+                  .take(3)
+                  .toList();
+
+              if (related.isEmpty) return const SizedBox.shrink();
+
+              return Column(
+                children: related
+                    .map((a) => _RelatedArticalTile(article: a))
+                    .toList(),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RelatedArticalTile extends StatelessWidget {
+  const _RelatedArticalTile({required this.article});
+  final ArticalModel article;
+  @override
+  Widget build(BuildContext context) {
+    return Placeholder();
+  }
+}
+
+class _furtherReadingSkeleton extends StatelessWidget {
+  const _furtherReadingSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
     return Placeholder();
   }
 }
