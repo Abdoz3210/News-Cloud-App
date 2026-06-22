@@ -15,12 +15,12 @@ class TopicFilterChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 44,
+      height: 50,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         itemCount: NewsCategories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final category = NewsCategories[index];
           final isActive = category.apiValue == selectedCategory;

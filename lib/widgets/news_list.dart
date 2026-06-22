@@ -13,7 +13,9 @@ class NewsList extends StatelessWidget {
         index,
       ) {
         // return NewsCard(artical: articals[index])
-        return HeroArticleCard(artical: articals[index], onTap: () {});
+        return HeroArticleCard(
+          artical: articals[index],
+        );
       }),
     );
   }

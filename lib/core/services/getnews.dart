@@ -13,20 +13,20 @@ class NewsServce {
   // }
 
   Future<List<ArticalModel>> getGeneral({required String category}) async {
-    final Response response = await dio.get(
-      'https://newsapi.org/v2/top-headlines?apiKey=232668304d4342d5a1a6407d88450a86&category=$category',
-    );
-    Map<String, dynamic> josnData = response.data;
-    List<dynamic> articals = josnData['articles'];
+    try {
+      final Response response = await dio.get(
+        'https://newsapi.org/v2/top-headlines?apiKey=232668304d4342d5a1a6407d88450a86&category=$category',
+      );
+      // Map<String, dynamic> josnData = response.data;
+      final List articales = response.data['articles'];
 
-    List<ArticalModel> articalList = [];
-
-    for (var artical in articals) {
-      ArticalModel articalModel = ArticalModel.fromjson(artical);
-      articalList.add(articalModel);
+      // print(articalList);
+      return articales
+          .map((a) => ArticalModel.fromjson(a, category: category))
+          .toList();
+    } catch (e) {
+      return [];
     }
-    // print(articalList);
-    return articalList;
   }
 
   Future<List<ArticalModel>> getHeadlines({int pageSize = 2}) async {
@@ -48,4 +48,23 @@ class NewsServce {
       return [];
     }
   }
+
+  // Future<List<ArticalModel>> getGeneral({required String category}) async {
+  //   try {
+  //     final Response response = await dio.get(
+  //       'https://newsapi.org/v2/top-headlines',
+  //       queryParameters: {
+  //         'apiKey': 'your_key',
+  //         'category': category,
+  //         'country': 'us',
+  //       },
+  //     );
+  //     final List articles = response.data['articles'];
+  //     return articles
+  //         .map((a) => ArticalModel.fromjson(a, category: category))
+  //         .toList();
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 }

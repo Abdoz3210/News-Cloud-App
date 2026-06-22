@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
+import 'package:news_app/views/category_view.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -38,21 +39,54 @@ class AppDrawer extends StatelessWidget {
               icon: Icons.public_rounded,
               label: "World News",
               isActive: false,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CategoryView(
+                      category: 'general',
+                      label: 'World News',
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 8),
             _DrawerItem(
               icon: Icons.business_center_outlined,
               label: "Business",
               isActive: false,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CategoryView(
+                      category: 'business',
+                      label: 'Business',
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 8),
             _DrawerItem(
               icon: Icons.palette_outlined,
               label: "Culture",
               isActive: false,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CategoryView(
+                      category: 'culture',
+                      label: 'Culture',
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 8),
             _DrawerItem(
