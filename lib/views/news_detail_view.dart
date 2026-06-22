@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/Models/articales_model.dart';
 import 'package:news_app/core/services/getnews.dart';
 import 'package:news_app/theme/app_colors.dart';
@@ -178,21 +179,46 @@ class _DropCapBody extends StatelessWidget {
         final isFirst = index == 0;
         final paragraph = paragraphs[index];
 
-        return Padding(padding: const EdgeInsets.only(bottom: 16),
-        child: isFirst ?_DropCapParagraph(text: paragraph) : Text(paragraph,style: AppTypography.bodySerif,),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: isFirst
+              ? _DropCapParagraph(text: paragraph)
+              : Text(paragraph, style: AppTypography.bodySerif),
         );
       }),
     );
   }
 }
 
-class _DropCapParagraph extends StatelessWidget{
+class _DropCapParagraph extends StatelessWidget {
   const _DropCapParagraph({required this.text});
   final String text;
-  
-  @override 
-  Widget build(BuildContext context){
-    return Container(child: Text(text),);
+
+  @override
+  Widget build(BuildContext context) {
+    if (text.isEmpty) return const SizedBox.shrink();
+    final firstLetter = text.substring(0, 1);
+    final rest = text.substring(1);
+
+    return RichText(
+      text: TextSpan(
+        children: [
+          WidgetSpan(
+            alignment: PlaceholderAlignment.bottom,
+            child: Text(
+              firstLetter,
+              style: GoogleFonts.newsreader(
+                fontSize: 46,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+                height: 0.8,
+              ),
+            ),
+          ),
+          TextSpan(text: rest, style: AppTypography.bodySerif),
+        ],
+      ),
+    );
   }
 }
 
