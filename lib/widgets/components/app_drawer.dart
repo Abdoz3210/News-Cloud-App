@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:news_app/core/constants/news_categories.dart';
 import 'package:news_app/theme/app_colors.dart';
 import 'package:news_app/theme/typography.dart';
 import 'package:news_app/core/providers/auth_provider.dart';
@@ -13,7 +14,6 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final user = context.watch<AuthProvider>().curentUser;
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       width: MediaQuery.sizeOf(context).width * 0.75,
@@ -35,67 +35,51 @@ class AppDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 8),
 
-            _DrawerItem(
-              icon: Icons.public_rounded,
-              label: "World News",
-              isActive: false,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const CategoryView(
-                      category: 'general',
-                      label: 'World News',
+            Expanded(
+              child: CustomScrollView(
+                scrollDirection: Axis.vertical,
+                scrollBehavior: ScrollBehavior(),
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      childCount: NewsCategories.length,
+                      (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: _DrawerItem(
+                            icon: NewsCategories[index].icons!,
+                            label: NewsCategories[index].label,
+                            isActive: false,
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => CategoryView(
+                                    category: NewsCategories[index].apiValue,
+                                    label: NewsCategories[index].label,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 8),
-            _DrawerItem(
-              icon: Icons.business_center_outlined,
-              label: "Business",
-              isActive: false,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const CategoryView(
-                      category: 'business',
-                      label: 'Business',
+                  SliverToBoxAdapter(
+                    child: _DrawerItem(
+                      icon: Icons.bookmark_outline_rounded,
+                      label: "Saved Stories",
+                      isActive: false,
+                      onTap: () => Navigator.pop(context),
                     ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
+
             const SizedBox(height: 8),
-            _DrawerItem(
-              icon: Icons.palette_outlined,
-              label: "Culture",
-              isActive: false,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const CategoryView(
-                      category: 'culture',
-                      label: 'Culture',
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 8),
-            _DrawerItem(
-              icon: Icons.bookmark_outline_rounded,
-              label: "Saved Stories",
-              isActive: false,
-              onTap: () => Navigator.pop(context),
-            ),
-            const Spacer(),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
