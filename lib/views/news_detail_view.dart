@@ -87,7 +87,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
                   const SizedBox(height: 24),
 
                   if (article.descriptation != null)
-                    _styledBlockQuote(quote: article.descriptation),
+                    _styledBlockQuote(quote: article.descriptation!),
 
                   const SizedBox(height: 24),
 
@@ -134,11 +134,17 @@ class _furtherReadingSection extends StatelessWidget {
 
 class _styledBlockQuote extends StatelessWidget {
   const _styledBlockQuote({required this.quote});
-  final String? quote;
+  final String quote;
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(quote!));
+    return Container(
+      padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
+      decoration: BoxDecoration(
+        border: Border(left: BorderSide(color: AppColors.primary, width: 3)),
+      ),
+      child: Text(quote, style: AppTypography.pullQuote),
+    );
   }
 }
 
